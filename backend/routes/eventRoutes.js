@@ -1,8 +1,9 @@
 const router = require('express').Router();
 const {addEvent,getEvents, getEvent, updateEvent, deleteEvent } = require('./../controllers/eventController');
 
+const verifyToken= require('./../middlewares/verifyToken');
 
-router.post('/',async(req,res)=>{
+router.post('/',verifyToken,async(req,res)=>{
     try{
         const event = await addEvent(req.body);
         res.status(201).json({
@@ -58,7 +59,7 @@ router.get('/:id',async(req,res)=>{
     }
 })
 
-router.put('/:id',async(req,res)=>{
+router.put('/:id',verifyToken,async(req,res)=>{
     try{
         const event = await updateEvent(req.params.id,req.body);
          if (!event) return res.status(404).json({ success: false, message: "Event not found" });
@@ -79,7 +80,7 @@ router.put('/:id',async(req,res)=>{
 })
 
 
-router.delete('/:id',async(req,res)=>{
+router.delete('/:id',verifyToken,async(req,res)=>{
     try{
         const event = await deleteEvent(req.params.id);
          if (!event) return res.status(404).json({ success: false, message: "Event not found" });

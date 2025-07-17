@@ -1,8 +1,8 @@
 const router = require('express').Router();
 const { addGallary, getGallaries, getGallary, updateGallary, deleteGallary } = require('./../controllers/gallaryController');
+const verifyToken = require('./../middlewares/verifyToken')
 
-
-router.post('/',async(req,res)=>{
+router.post('/',verifyToken,async(req,res)=>{
     try{
         const gallary = await addGallary(req.body);
         res.status(201).json({
@@ -39,7 +39,7 @@ router.get('/',async(req,res)=>{
 
 
 
-router.get('/:id',async(req,res)=>{
+router.get('/:id',verifyToken,async(req,res)=>{
     try{
         const gallary = await getGallary(req.params.id);
          if (!gallary) return res.status(404).json({ success: false, message: "Gallary not found" });
@@ -58,7 +58,7 @@ router.get('/:id',async(req,res)=>{
     }
 })
 
-router.put('/:id',async(req,res)=>{
+router.put('/:id',verifyToken,async(req,res)=>{
     try{
         const gallary = await updateGallary(req.params.id,req.body);
          if (!gallary) return res.status(404).json({ success: false, message: "Gallary not found" });
@@ -79,7 +79,7 @@ router.put('/:id',async(req,res)=>{
 })
 
 
-router.delete('/:id',async(req,res)=>{
+router.delete('/:id',verifyToken,async(req,res)=>{
     try{
         const gallary = await deleteGallary(req.params.id);
          if (!gallary) return res.status(404).json({ success: false, message: "Gallary not found" });

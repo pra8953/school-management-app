@@ -4,9 +4,10 @@ const eventRoute = require('./eventRoutes');
 const gallaryRoute = require('./gallaryRoutes');
 const teacherRoute = require('./teacherRoutes');
 const noticeRoute = require('./noticeRoutes');
+const authRoute = require('./authRoute')
 
 
-
+router.use('/api',authRoute);
 router.use('/api/contact',contactRoute);
 router.use('/api/event',eventRoute);
 router.use('/api/gallary',gallaryRoute);

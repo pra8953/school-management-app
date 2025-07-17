@@ -10,8 +10,12 @@
         onmouseover="this.stop();"
         onmouseout="this.start();"
       >
-        Stay updated with the latest announcements and events happening at our
-        school.
+        <span *ngFor="let n of notices; let last = last">
+          <a [routerLink]="['/notices']" class="text-white text-decoration-none">
+            {{ n.title }}
+          </a>
+          <span *ngIf="!last"> | </span>
+        </span>
       </marquee>
     </div>
   </div>

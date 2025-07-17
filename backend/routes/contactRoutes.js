@@ -1,6 +1,9 @@
 const router = require('express').Router();
-const { addContact, getContacts ,getContact, updateContact, deleteContact} = require('./../controllers/contactController');
+const {
+     addContact, getContacts ,getContact, updateContact, deleteContact
+    } = require('./../controllers/contactController');
 
+const verifyToken = require('./../middlewares/verifyToken');
 
 router.post('/',async(req,res)=>{
     try{
@@ -20,7 +23,7 @@ router.post('/',async(req,res)=>{
 })
 
 
-router.get('/',async(req,res)=>{
+router.get('/',verifyToken,async(req,res)=>{
     try{
         const contacts = await getContacts();
         res.status(200).json({
@@ -39,7 +42,7 @@ router.get('/',async(req,res)=>{
 
 
 
-router.get('/:id',async(req,res)=>{
+router.get('/:id',verifyToken,async(req,res)=>{
     try{
         const contact = await getContact(req.params.id);
          if (!contact) return res.status(404).json({ success: false, message: "Contact not found" });
@@ -58,7 +61,7 @@ router.get('/:id',async(req,res)=>{
     }
 })
 
-router.put('/:id',async(req,res)=>{
+router.put('/:id',verifyToken,async(req,res)=>{
     try{
         const contact = await updateContact(req.params.id,req.body);
          if (!contact) return res.status(404).json({ success: false, message: "Contact not found" });
@@ -79,7 +82,7 @@ router.put('/:id',async(req,res)=>{
 })
 
 
-router.delete('/:id',async(req,res)=>{
+router.delete('/:id',verifyToken,async(req,res)=>{
     try{
         const contact = await deleteContact(req.params.id);
          if (!contact) return res.status(404).json({ success: false, message: "Contact not found" });
