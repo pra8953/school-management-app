@@ -1,8 +1,8 @@
 const router = require('express').Router();
 const { addGallary, getGallaries, getGallary, updateGallary, deleteGallary } = require('./../controllers/gallaryController');
 const verifyToken = require('./../middlewares/verifyToken')
-
-router.post('/',verifyToken,async(req,res)=>{
+const gallaryValidation = require('./../validators/gallaryValidation')
+router.post('/',verifyToken,gallaryValidation,async(req,res)=>{
     try{
         const gallary = await addGallary(req.body);
         res.status(201).json({
@@ -58,7 +58,7 @@ router.get('/:id',verifyToken,async(req,res)=>{
     }
 })
 
-router.put('/:id',verifyToken,async(req,res)=>{
+router.put('/:id',verifyToken,gallaryValidation,async(req,res)=>{
     try{
         const gallary = await updateGallary(req.params.id,req.body);
          if (!gallary) return res.status(404).json({ success: false, message: "Gallary not found" });

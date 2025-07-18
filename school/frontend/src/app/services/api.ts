@@ -12,4 +12,13 @@ export class Api {
   getNotices(){
     return this.http.get(`${this.api}/notice`)
   }
+
+
+  getEvents(){
+    return this.http.get(this.api+"/event");
+  }
+
+  getGallaries(){
+    return this.http.get(this.api+'/gallary');
+  }
 }

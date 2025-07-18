@@ -1,8 +1,9 @@
 const router = require('express').Router();
 const { addTeacher, getTeachers, getTeacher, updateTeacher, deleteTeacher } = require('./../controllers/TeacherController');
-
+const verifyToken = require('./../middlewares/verifyToken');
+const teacherValidation = require('./../validators/teacherValidation')
 // ✅ Create Teacher
-router.post('/', async (req, res) => {
+router.post('/', verifyToken,teacherValidation,async (req, res) => {
     try {
         const teacher = await addTeacher(req.body);
         res.status(201).json({
@@ -35,7 +36,7 @@ router.get('/', async (req, res) => {
 });
 
 // ✅ Get Single Teacher by ID
-router.get('/:id', async (req, res) => {
+router.get('/:id',verifyToken, async (req, res) => {
     try {
         const teacher = await getTeacher(req.params.id);
         if (!teacher) return res.status(404).json({ success: false, message: "Teacher not found" });
@@ -52,7 +53,7 @@ router.get('/:id', async (req, res) => {
 });
 
 // ✅ Update Teacher
-router.put('/:id', async (req, res) => {
+router.put('/:id',verifyToken,teacherValidation, async (req, res) => {
     try {
         const teacher = await updateTeacher(req.params.id, req.body);
         if (!teacher) return res.status(404).json({ success: false, message: "Teacher not found" });
@@ -70,7 +71,7 @@ router.put('/:id', async (req, res) => {
 });
 
 // ✅ Delete Teacher
-router.delete('/:id', async (req, res) => {
+router.delete('/:id',verifyToken, async (req, res) => {
     try {
         const teacher = await deleteTeacher(req.params.id);
         if (!teacher) return res.status(404).json({ success: false, message: "Teacher not found" });

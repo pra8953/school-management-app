@@ -4,8 +4,9 @@ const {
     } = require('./../controllers/contactController');
 
 const verifyToken = require('./../middlewares/verifyToken');
+const contactValidation = require('../validators/contactValidaton');
 
-router.post('/',async(req,res)=>{
+router.post('/',contactValidation,async(req,res)=>{
     try{
         const contact = await addContact(req.body);
         res.status(201).json({
@@ -61,7 +62,7 @@ router.get('/:id',verifyToken,async(req,res)=>{
     }
 })
 
-router.put('/:id',verifyToken,async(req,res)=>{
+router.put('/:id',verifyToken,contactValidation,async(req,res)=>{
     try{
         const contact = await updateContact(req.params.id,req.body);
          if (!contact) return res.status(404).json({ success: false, message: "Contact not found" });

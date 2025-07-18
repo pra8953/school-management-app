@@ -1,9 +1,9 @@
 const router = require('express').Router();
 const {addEvent,getEvents, getEvent, updateEvent, deleteEvent } = require('./../controllers/eventController');
-
+const eventValidation = require('./../validators/eventValidation');
 const verifyToken= require('./../middlewares/verifyToken');
 
-router.post('/',verifyToken,async(req,res)=>{
+router.post('/',verifyToken,eventValidation,async(req,res)=>{
     try{
         const event = await addEvent(req.body);
         res.status(201).json({
@@ -59,7 +59,7 @@ router.get('/:id',async(req,res)=>{
     }
 })
 
-router.put('/:id',verifyToken,async(req,res)=>{
+router.put('/:id',verifyToken,eventValidation,async(req,res)=>{
     try{
         const event = await updateEvent(req.params.id,req.body);
          if (!event) return res.status(404).json({ success: false, message: "Event not found" });

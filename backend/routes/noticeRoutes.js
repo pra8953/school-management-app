@@ -1,8 +1,9 @@
 const router = require('express').Router();
 const { addNotice, getNotices, getNotice, updateNotice, deleteNotice } = require('./../controllers/noticeController');
 const verifyToken = require('./../middlewares/verifyToken')
+const noticeValidation = require('./../validators/noticesValidation');
 // ✅ Create Notice
-router.post('/',verifyToken, async (req, res) => {
+router.post('/',verifyToken,noticeValidation, async (req, res) => {
     try {
         const notice = await addNotice(req.body);
         res.status(201).json({
@@ -52,7 +53,7 @@ router.get('/:id', async (req, res) => {
 });
 
 // ✅ Update Notice
-router.put('/:id',verifyToken, async (req, res) => {
+router.put('/:id',verifyToken,noticeValidation, async (req, res) => {
     try {
         const notice = await updateNotice(req.params.id, req.body);
         if (!notice) return res.status(404).json({ success: false, message: "Notice not found" });
